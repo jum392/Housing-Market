@@ -55,12 +55,13 @@ replace reg_house_price_exl = (reg_house_sum - whp)/(weight_sum - weight_c) if w
 replace reg_house_price_exl = reg_house_price_exl/CPI
 
 
+
 gen dum_young = 1 if age <= 40
 replace dum_young = 0 if age > 40
 
 gen ln_wealth = ln(fin_wealth)
 gen ln_debt = ln(fin_debt)
-
+replace m_inc = m_inc/CPI
 
 gen house_purchase = 1 if house_owner == 1 & L.house_owner == 0
 replace house_purchase = 0 if missing(house_purchase)
@@ -70,6 +71,7 @@ gen lnw_h = ln(unit_wage)
 
 replace house_wealth = 0 if house_owner == 0 & missing(house_wealth)
 gen tot_wealth = fin_wealth + house_wealth
+replace tot_wealth = tot_wealth + house_col if house_owner == 0
 gen net_wealth = fin_wealth + house_wealth - fin_debt
 
 
@@ -102,3 +104,6 @@ label value house_owner ownership
 label variable reg_house_price_exl "Reg.HP"
 label variable age "Age"
 label variable age2 "Age**2"
+label variable m_inc "Income"
+
+fvset base 1 house_owner
