@@ -32,7 +32,8 @@ merge m:m hhid`y' using ".\klips`y'h.dta", keepusing(h`y'0141 h`y'0142 h`y'0150 
 h`y'1406 h`y'1410 h`y'1412 h`y'1413 h`y'1414 h`y'2512 h`y'2513 ///
 h`y'2562 h`y'2564 h`y'2566 h`y'2568 h`y'2570 h`y'2572 ///
 h`y'2602 h`y'2605 h`y'2608 h`y'2611 h`y'2614 h`y'2617 h`y'1401 ///
-h`y'2202 h`y'2204 h`y'2206 h`y'2208	h`y'2210 h`y'2212)
+h`y'2202 h`y'2204 h`y'2206 h`y'2208	h`y'2210 h`y'2212 ///
+h`y'2301 h`y'2311 h`y'2316)
 drop if _merge == 2
 drop _merge
 
@@ -111,6 +112,12 @@ replace unemp = 0 if !missing(jobclass)
 gen OLF = 1 if missing(jobclass) & missing(unemp)
 replace OLF = 0 if !missing(unemp)
 
+* Consumption
+rename h`y'2301 consumption
+rename h`y'2311 food_consumption
+rename h`y'2316 housing_consumption
+gen nh_consumption = consumption - housing_consumption
+
 
 
 * weight
@@ -120,7 +127,8 @@ rename w`y'p_c weight_c
 
 keep year pid sex age edu region region2 num_fam house_own house_size house_price ///
 house_col house_rent house_wealth fin_wealth fin_debt wage lab_hour tenure job_ch ///
-emp_stat unemp OLF weight_l weight_c ind occ moving m_inc
+emp_stat unemp OLF weight_l weight_c ind occ moving m_inc ///
+consumption food_consumption housing_consumption nh_consumption
  
 save ".\KLIPS`y'clean.dta", replace
 }
