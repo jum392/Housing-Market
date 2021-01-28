@@ -39,9 +39,19 @@ replace house_own_ever = 0 if house_owner_year == 0
 
 
 
+
 replace house_price = . if house_price < 0
 egen reg_house_price = wtmean(house_price), weight(weight_c) by(region year)
 egen reg_house_price2 = wtmean(house_price), weight(weight_c) by(region region2 year)
+egen reg_ownership = wtmean(house_owner), weight(weight_c) by(region region2 year)
+egen reg_unemployment = wtmean(unemp), weight(weight_c) by(region region2 year)
+gen dum = 1
+egen reg_num = sum(dum), by(region region2 year)
+drop dum
+
+egen all_house_price = wtmean(house_price), weight(weight_c) by(year)
+egen all_ownership = wtmean(house_owner), weight(weight_c) by(year)
+
 
 ** Generate regional average price excluding own price
 gen whp = house_price * weight_c
@@ -53,6 +63,7 @@ egen reg_house_sum = sum(whp), by(region region2 year)
 gen reg_house_price_exl = reg_house_sum / weight_sum if whp == 0
 replace reg_house_price_exl = (reg_house_sum - whp)/(weight_sum - weight_c) if whp != 0
 replace reg_house_price_exl = reg_house_price_exl
+
 
 
 
