@@ -1,0 +1,132 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{tabularx}
+\usepackage{subfigure}
+%\usepackage{kpfonts}    % for nice fonts
+\usepackage{microtype} 
+\usepackage{booktabs}   % for nice tables
+\usepackage{bm}         % for bold math
+\usepackage{listings}   % for inserting code
+\usepackage{verbatim}   % useful for program listings
+\usepackage{color}  
+\usepackage[colorlinks=true,citecolor={red!60!black}]{hyperref}
+% use for hypertext
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{natbib}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage[nameinlink,capitalize]{cleveref}
+%\doublespacing
+\onehalfspacing
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newcommand\PlaceInsert[1]{%
+  \begin{center}
+  \framebox{Insert \Cref{#1} here.}
+  \end{center}
+  \bigskip}
+
+
+\begin{document}
+
+%+Title
+\title{\textbf{Local Housing Market and Extensive and Intensive Margins of Labor Supply}}%\\%{\small \textbf{subtitle}}}
+\author{Inhyuk Choi\footnote{KIPF. ichoi@psu.edu},\quad Ji-Woong Moon\footnote{SUFE. jum392@psu.edu}}
+\date{\today}
+\maketitle
+%-Title
+%+Abstract
+\begin{abstract}
+No abstract.
+\end{abstract}
+%-Abstract
+
+\section{Motivation}
+In many countries, including South Korea and the U.S., housing is the single most important asset for households. As such, it is a primary interest for economists to exploring how housing market influences labor supply decisions of workers. Previous literature mainly interests in the effects of housing ownership to the extensive margin of labor supply. On the other hand, relatively little is known about how local labor market conditions affect workers' intensive margin choice. This paper explores that point using KLIPS. 
+
+
+Regression results may not support or contradict to the introduction. 
+
+\bigskip
+\section{Regression}
+\begin{eqnarray}
+y_{it} = \alpha_i + \gamma_t + x_{it}'\beta + \eta_{j(i,t)} +\beta_0 I(H_{it} = r) + \sum_{h=o,r} P_{j(i,t)}\cdot I(H_{it} = h)\cdot\beta_{h} + \epsilon_{it}
+\end{eqnarray}
+\begin{itemize}
+	\item $y_{it}$: dependent variable. labor hours, unemployment dummy and real wages.
+	\item $\alpha_i,\gamma_t$: individual and time fixed effects			\item $x_{it}$: age, age-squared, total wealth (financial + housing), financial debt, monthly income (from all sources. labor, financial, etc.)
+	\item $j(i,t)$: a region where $i$ lives at time $t$
+	\item $\eta_{j(i,t)}$ : region fixed effect
+	\item $P_{j(i,t)}$ : regional (real) house price excluding own house price
+	\item $H_{it}$ : house ownership status. $H_{it} = o(wner)$ or $H_{it}=r(enter)$.
+	\item $\beta_0$: coefficient for renter dummy
+	\item $\beta_o,\beta_r$: effect of regional house prices on $y$, depending on house ownership status.
+\end{itemize}
+I use the KLIPS 04 - 22, since 04 is the first survey that monthly income is available. I consider the household head whose age is between 18 - 40. When calculating total wealth, I added housing deposits to financial wealth. It is a bit ambiguous that whether renters would report housing deposits as their wealth or not, because there is no housing deposit category (but, there exists personally rented money category) for wealth reporting. For house owners, if they rented a house, they should have reported the housing deposit as financial debts.
+\newpage
+\subsection{Results}
+\subsubsection{Labor Hours}
+\input{../Regressions/housing/regres_up.tex}
+Model (1) is without interaction between regional house price and house ownership. The effect of home-ownership itself does not have a significant effect for labor hours.
+
+Model (2) is baseline. The interaction term between renter and regional house price is positive and significant, while that of owners is negative and insignificant. The overall insignificant effect of model (1) comes from the higher labor hours of renters when regional house price is higher and lower labor hours of renters when regional house price is lower. Model (3) includes net wealth, rather than wealth and debt separate. Model (4) is only for people living in Seoul. The patterns are similar. The signs of wealth and debt effects are expected. 
+\newpage
+\subsubsection{Unemployment}
+
+\input{../Regressions/housing/regres_u_up.tex}
+\newpage
+\subsubsection{Wage}
+\input{../Regressions/housing/regres2_up.tex}
+
+\newpage
+\clearpage
+\bibliographystyle{../Refstyle/te}
+\bibliography{../Bib/mybib}
+\clearpage
+
+
+\end{document}
+
+
+
+\subsection{Previous Results}
+
+\input{../Regressions/housing/regres.tex}
+
+\begin{itemize}
+	\item (1): Baseline regression. Labor hour is positively correlated with regional house price only for home owners. One curiosity is that, why they are positively correlated. My initial guess was positive correlation for renters (work more to purchase house. More economically, work more because they become poorer as they are net-debtors in terms of housing services.) and negative correlation for owners (work less because they become wealthier)
+	\item (2): Regression for young people, who are less than 40. Only renters' labor hours are positively correlated to regional house price. Do young renters think (rationally?) that they are net-creditors of housing service (because they will become home-owners sooner or later) so that they interpret housing price increase as a good thing?
+\end{itemize}
+The positive correlation might be from the demand channel (Mian and Sufi, 2011). When housing prices increase, local demand increases so that wage and employment increase. To isolate this effect from the expected housing cost channel, I run two regressions. 
+\begin{itemize}
+	\item (3): This is regression only for people who are living in Seoul. The underlying assumption is that within Seoul, even services are freely traded across "local markets." Within Seoul, both renters and owners labor hours are positively (why?) correlated with regional house price. 
+	\item (4): This is regression only for workers in manufacturing industry. Mian and Sufi (2011) argue that manufacturing sectors are not responsive to local housing shock because they are nationally traded. For manufacturing sector workers, only renters' labor hours are negatively (why?) correlated with regional house price. 
+\end{itemize}
+
+
+\input{../Regressions/housing/regres_m.tex}
+
+
+In the previous regression, I control for the hourly wage which is constructed by monthly wage / labor hour. It may be problematic. Also, the sign of total wealth is counter-intuitive. So, I run the regression without this hourly wage in Table 2. The total wealth has desired sign. The effect of regional house prices are similar. 
+
+\input{../Regressions/housing/regres_u.tex}
+
+
+Table 3 is the result for unemployment dummy. For extensive margin, the regional house prices positively affect employment rate (reduce unemployment rate). It is so only for workers who are living in Seoul. Still, there can be chances that local demand channel is not fully controlled for. 
+\input{../Regressions/housing/regres2.tex}
+
+
+Table 4 is the result for wages. It is more problematic than previous labor supply variables (in my opinion) since wealth are highly endogenous, and interact with wages. 
