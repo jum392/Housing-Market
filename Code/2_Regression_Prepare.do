@@ -1,7 +1,6 @@
 *** Regression
 
 
-
 eststo clear
 eststo: xtreg lab_hour c.age c.age2 i.year i.unique_region tot_wealth ///
 fin_debt m_inc i.house_owner [aw = weight] ///

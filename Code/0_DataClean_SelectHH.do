@@ -7,7 +7,8 @@ set more off
 cd "c:\data\KLIPS\data"
 
 *local year 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
-local year 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
+*local year 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
+local year 09 10 11 12 13 14 15 16 17 18 19 20 21 22
 
 foreach y of local year{
 
@@ -17,8 +18,14 @@ use ".\klips`y'p.dta", replace
 
 gen year = 20`y' - 3
 
-* Only household head
-drop if p`y'0102 != 10
+
+*drop if p`y'0102 != 10
+*gen househead =1 if p`y'0102 == 10
+
+* Only household head and wife
+drop if p`y'0102 != 10 & p`y'0102 != 20
+gen househead = 1 if p`y'0102 == 10
+replace househead = 0 if p`y'0102 == 20
 
 
 * Demographics
@@ -33,7 +40,8 @@ h`y'1406 h`y'1410 h`y'1412 h`y'1413 h`y'1414 h`y'2512 h`y'2513 ///
 h`y'2562 h`y'2564 h`y'2566 h`y'2568 h`y'2570 h`y'2572 ///
 h`y'2602 h`y'2605 h`y'2608 h`y'2611 h`y'2614 h`y'2617 h`y'1401 ///
 h`y'2202 h`y'2204 h`y'2206 h`y'2208	h`y'2210 h`y'2212 ///
-h`y'2301 h`y'2311 h`y'2316)
+h`y'2301 h`y'2311 h`y'2316 ///
+h`y'1501 h`y'1118 h`y'1119 h`y'1127 h`y'1128 h`y'1218 h`y'1219 h`y'1227 h`y'1228)
 drop if _merge == 2
 drop _merge
 
@@ -47,6 +55,13 @@ rename h`y'1410 house_size
 rename h`y'1412 house_price
 rename h`y'1413 house_col
 rename h`y'1414 house_rent
+rename h`y'1501 school_child
+replace school_child = 0 if school_child == 2
+
+gen par_receive = h`y'1118 + h`y'1119 + h`y'1218 + h`y'1219
+gen par_give = h`y'1127 + h`y'1128 + h`y'1227 + h`y'1228
+replace par_receive = 0 if missing(par_receive)
+replace par_give = 0 if missing(par_give)
 
 * Build housing wealth
 rename h`y'2512 house_wealth
@@ -111,6 +126,10 @@ gen unemp = 1 if p`y'2801 == 1 | p`y'2802 == 1
 replace unemp = 0 if !missing(jobclass)
 gen OLF = 1 if missing(jobclass) & missing(unemp)
 replace OLF = 0 if !missing(unemp)
+rename p`y'2706 search_dur
+
+gen job_ch2 = 1 if !missing(p`y'2701)
+replace job_ch2 = 0 if missing(job_ch2) & !missing(unemp)
 
 * Consumption
 rename h`y'2301 consumption
@@ -127,8 +146,9 @@ rename w`y'p_c weight_c
 
 keep year pid sex age edu region region2 num_fam house_own house_size house_price ///
 house_col house_rent house_wealth fin_wealth fin_debt wage lab_hour tenure job_ch ///
-emp_stat unemp OLF weight_l weight_c ind occ moving m_inc ///
-consumption food_consumption housing_consumption nh_consumption
+emp_stat unemp OLF weight_l weight_c ind occ moving m_inc househead job_ch2 ///
+consumption food_consumption housing_consumption nh_consumption school_child search_dur ///
+par_receive par_give
  
 save ".\KLIPS`y'clean.dta", replace
 }
@@ -136,8 +156,8 @@ save ".\KLIPS`y'clean.dta", replace
 
 
 
-use ".\KLIPS04clean.dta"
-local y2 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
+use ".\KLIPS09clean.dta"
+local y2 10 11 12 13 14 15 16 17 18 19 20 21 22
 
 foreach z of local y2{
 append using ".\KLIPS`z'clean.dta"

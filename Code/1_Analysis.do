@@ -5,6 +5,9 @@ cd "c:\data\KLIPS\data"
 use ".\KLIPSclean_full.dta"
 
 
+set matsize 5000
+set more off
+
 merge m:1 year using ".\CPI_yearly.dta"
 drop if _merge == 2
 drop _merge
@@ -28,6 +31,7 @@ drop if moving < 0
 
 xtset pid year
 gen dlnw = lnw - L.lnw
+gen lnhour = ln(lab_hour)
 bysort pid: egen weight = mean(weight_l)
 
 ** Generate house owner state
@@ -83,7 +87,7 @@ gen lnw_h = ln(unit_wage)
 replace house_wealth = 0 if house_owner == 0 & missing(house_wealth)
 gen tot_wealth = fin_wealth + house_wealth
 replace tot_wealth = tot_wealth + house_col if house_owner == 0
-gen net_wealth = fin_wealth + house_wealth - fin_debt
+gen net_wealth = tot_wealth - fin_debt
 
 
 ** Moving dummy
@@ -96,6 +100,12 @@ replace reg_ch = 1 if region == L.region & region2 != L.region2
 replace reg_ch = 0 if region == L.region & region2 == L.region2
 replace reg_ch = 0 if year == 1999
 
+gen metro = 1 if region == 1 | region == 8
+replace metro = 0 if missing(metro)
+
+gen Lmetro = L.metro
+
+
 egen mdsum = sum(moving), by(pid)
 gen mover_dum = 1 if mdsum > 0
 replace mover_dum = 0 if mdsum == 0
@@ -106,6 +116,32 @@ replace reg_ch_dum = 0 if regsum == 0
 
 ** Generate unique region id
 gen unique_region = 100*region + region2
+
+
+** Unexpected (cyclical component HP)
+reg reg_house_price2 i.year i.unique_region i.unique_region#c.year ///
+[aw = weight] if reg_house_price_exl > 0 & reg_num >= 10
+predict reg_HP_cyc, residual
+
+
+** Build tradable sectors
+gen ind1 = 1 if ind >= 100 & ind < 350
+replace ind1 = 0 if missing(ind1) & !missing(ind)
+gen ind2 = 1 if ind >= 580 & ind < 680
+replace ind2 = 0 if missing(ind2) & !missing(ind)
+gen ind3 = 1 if ind >= 700 & ind < 740
+replace ind3 = 0 if missing(ind3) & !missing(ind)
+gen ind4 = 1 if ind < 100
+replace ind4 = 0 if missing(ind4) & !missing(ind)
+
+by pid: gen numob = _n
+gen trd = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1 | ind4 == 1) & numob == 1
+replace trd = 0 if missing(trd) & !missing(ind) & numob == 1
+replace trd = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1 | ind4 ==1) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
+replace trd = 0 if missing(trd) & numob == 2 & (L.OLF == 1 | L.unemp == 1) 
+
+egen dum_trd = sum(trd), by(pid)
+
 
 gen age2 = age * age
 
