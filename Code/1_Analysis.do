@@ -12,6 +12,15 @@ merge m:1 year using ".\CPI_yearly.dta"
 drop if _merge == 2
 drop _merge
 
+
+** Generate unique region id
+gen unique_region = 100*region + region2
+
+
+** Unexpected (cyclical component HP)
+merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc)
+
+
 gen lnw = ln(wage)
 
 
@@ -34,6 +43,10 @@ gen dlnw = lnw - L.lnw
 gen lnhour = ln(lab_hour)
 bysort pid: egen weight = mean(weight_l)
 
+gen employ = 1 if unemp == 0
+replace employ = 0 if unemp == 1 | OLF == 1
+
+
 ** Generate house owner state
 gen house_owner = 1 if house_own == 1
 replace house_owner = 0 if house_own != 1
@@ -52,6 +65,10 @@ egen reg_unemployment = wtmean(unemp), weight(weight_c) by(region region2 year)
 gen dum = 1
 egen reg_num = sum(dum), by(region region2 year)
 drop dum
+gen reg_up10 = 1 if reg_num >= 10
+replace reg_up10 = 0 if reg_num < 10
+egen reg_up10dum = mean(reg_up10), by(region region2)
+
 
 egen all_house_price = wtmean(house_price), weight(weight_c) by(year)
 egen all_ownership = wtmean(house_owner), weight(weight_c) by(year)
@@ -104,7 +121,8 @@ gen metro = 1 if region == 1 | region == 8
 replace metro = 0 if missing(metro)
 
 gen Lmetro = L.metro
-
+gen young = 1 if age <= 40
+replace young = 0 if age > 40
 
 egen mdsum = sum(moving), by(pid)
 gen mover_dum = 1 if mdsum > 0
@@ -113,16 +131,6 @@ replace mover_dum = 0 if mdsum == 0
 egen regsum = sum(reg_ch), by(pid)
 gen reg_ch_dum = 1 if regsum > 0
 replace reg_ch_dum = 0 if regsum == 0 
-
-** Generate unique region id
-gen unique_region = 100*region + region2
-
-
-** Unexpected (cyclical component HP)
-reg reg_house_price2 i.year i.unique_region i.unique_region#c.year ///
-[aw = weight] if reg_house_price_exl > 0 & reg_num >= 10
-predict reg_HP_cyc, residual
-
 
 ** Build tradable sectors
 gen ind1 = 1 if ind >= 100 & ind < 350
@@ -142,15 +150,57 @@ replace trd = 0 if missing(trd) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
 
 egen dum_trd = sum(trd), by(pid)
 
+gen trd2 = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1) & numob == 1
+replace trd2 = 0 if missing(trd2) & !missing(ind) & numob == 1 & ind4 == 0
+replace trd2 = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
+replace trd2 = 0 if missing(trd2) & numob == 2 & (L.OLF == 1 | L.unemp == 1) & ind4 == 0 
+replace trd2 = -1 if ind4 == 1 & numob == 1
+replace trd2 = -1 if missing(L.trd2) & ind4 == 1 & numob == 2
+
+egen dum_trd2 = sum(trd2), by(pid)
+replace dum_trd2 = . if dum_trd2 < 0
+
+gen dum_trd3 = 1 if (L.ind1 == 1 | L.ind2 == 1 | L.ind3 == 1 )
+replace dum_trd3 = 0 if L.ind1 == 0 & L.ind2 == 0 & L.ind3 == 0
 
 gen age2 = age * age
+
+gen emp2 = 1 if unemp == 0
+replace emp2 = 0 if unemp == 1
+
+gen LF = 1 if OLF == 0
+replace LF = 0 if OLF == 1
+
+gen Lhouse_owner = 1 if L.house_owner == 1
+replace Lhouse_owner = 0 if L.house_owner == 0
+
+* Unit change
+replace reg_HP_cyc = reg_HP_cyc / 10000
+replace tot_wealth = tot_wealth / 10000
+replace fin_debt = fin_debt / 10000
+
 
 label variable lnw_h "Hourly wage"
 label define ownership 0 "Renter" 1 "Owner"
 label value house_owner ownership
+label value Lhouse_owner ownership
 label variable reg_house_price_exl "Reg.HP"
 label variable age "Age"
 label variable age2 "Age**2"
 label variable m_inc "Income"
+label define young2 0 "Old" 1 "Young"
+label value young young2
+label define trd 0 "Services" 1 "Tradable"
+label value dum_trd trd
+label value dum_trd2 trd
+label variable reg_HP_cyc "Reg.HP.Cyc"
+label variable num_fam "Num. of Family"
+label define child 0 "Child:None" 1 "Have children"
+label value school_child child
+label variable tot_wealth "Wealth"
+label variable fin_debt "Fin.Debt"
+label variable consumption "Consumption"
+label variable nh_consumption "Consumption(Non-housing)"
+label variable food_consumption "Food consumption"
 
 fvset base 1 house_owner
