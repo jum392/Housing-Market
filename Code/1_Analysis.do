@@ -18,7 +18,7 @@ gen unique_region = 100*region + region2
 
 
 ** Unexpected (cyclical component HP)
-merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc)
+merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2 reg_HP_cyc3)
 
 
 gen lnw = ln(wage)
@@ -194,6 +194,8 @@ label define trd 0 "Services" 1 "Tradable"
 label value dum_trd trd
 label value dum_trd2 trd
 label variable reg_HP_cyc "Reg.HP.Cyc"
+label variable reg_HP_cyc2 "Reg.HP.Cyc"
+
 label variable num_fam "Num. of Family"
 label define child 0 "Child:None" 1 "Have children"
 label value school_child child

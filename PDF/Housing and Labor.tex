@@ -84,7 +84,7 @@ It is necessary to separate out unanticipated-shocks and anticipated-trends from
 \begin{eqnarray}
 \tilde P_{j,t} = \alpha_j + \gamma_t + \rho \tilde P_{j,t-1} + \epsilon_t
 \end{eqnarray}
-where $j$ is region, $\tilde P_{j,t}$ is the average house price calculated by KLIPS. We run the fixed-effect regression, and define the housing market shock $P_{j,t}$ by the residual: $P_{j,t} \equiv \tilde P_{j,t} - \hat{\tilde P}_{j,t}$. 
+where $j$ is region, $\tilde P_{j,t}$ is the log-average house price calculated by KLIPS. $\alpha_j$ is the region-specific growth rate of housing price. Aggregate shock is absorbed by time-fixed effect $\gamma_t$. We run the fixed effect regression, and define the housing market shock $P_{j,t}$ by the residual: $P_{j,t} \equiv \tilde P_{j,t} - \hat{\tilde P}_{j,t}$. 
 \begin{eqnarray}
 y_{it} = \alpha_i + \gamma_t + x_{it}'\beta + \eta_{j(i,t)} +\beta_0 I(H_{it} = r) + \sum_{h=o,r} P_{j(i,t)}\cdot I(H_{it} = h)\cdot\beta_{h} + \epsilon_{it}
 \end{eqnarray}
