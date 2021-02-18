@@ -1,0 +1,142 @@
+\documentclass[10pt]{article}
+
+% Document format
+\usepackage{afterpage}
+\usepackage[page]{appendix}
+\usepackage{enumitem}
+\usepackage{fullpage}
+\usepackage{multirow}
+\usepackage{natbib}
+    \bibliographystyle{chicago}
+\usepackage{pdflscape}
+\usepackage{setspace}
+    \doublespacing
+    %\onehalfspacing
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{verbatim}
+
+% Graphics
+\usepackage[dvipsnames,table]{xcolor}
+    \definecolor{red1}{RGB}{242,220,219}
+    \definecolor{red2}{RGB}{230,184,183}
+    \definecolor{red3}{RGB}{218,150,148}
+    \definecolor{red4}{RGB}{192, 80, 77}
+    \definecolor{red5}{RGB}{150, 54, 52}
+    \definecolor{red6}{RGB}{ 99, 37, 35}
+\usepackage[capposition=top]{floatrow}
+\usepackage{arydshln}
+    \setlength\dashlinedash{0.5pt}
+    \setlength\dashlinegap{1.5pt}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage[subrefformat=parens,labelformat=parens]{subcaption}
+\usepackage{tikz}
+
+% Mathematics
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+    \newtheorem{proposition}{Proposition}
+    \theoremstyle{definition}
+    \newtheorem{definition}{Definition}
+    \theoremstyle{remark}
+    \newtheorem{remark}{Remark}
+\usepackage{array}
+\usepackage{bbm}
+\usepackage{mathtools}
+
+\title{House Prices and Labor Supply: Evidence from South Korea\thanks{[To be added]}}
+\author{
+    Inhyuk Choi\thanks{Email: \texttt{\href{mailto:ichoi@psu.edu}{ichoi@psu.edu}}.}
+    \and
+    Ji-Woong Moon\thanks{Email: \texttt{\href{mailto:jum392@psu.edu}{jum392@psu.edu}}.}
+    }
+\date{February 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    [To be added] \\
+    \textbf{JEL classification}: \\
+    \textbf{Keywords}: 
+\end{abstract}
+
+\newpage
+
+\section{Introduction}\label{sec:intro}
+In many countries, including South Korea and the U.S., housing is the single most important asset for households. As such, it is a primary interest for economists to exploring how housing market influences labor supply decisions of workers. Previous literature mainly interests in the extensive margin choice of home-owners through wealth effects or collateral constraints. This paper explores how housing market shocks affect both intensive and extensive margins of labor supply, both for home-owners and renters. In doing so, we examine heterogeneous effects across ages and sectors.
+
+\paragraph{Related literature.} There are many papers that study how housing ownership itself affects the labor supply, especially focusing on extensive margin of the labor supply (cf, Oswald hypothesis). I will refer the literature review of Broulikova et al. (2020).
+
+\begin{quote}
+    \textit{The empirical evidence concerning the effects of homeownership on unemployment is even more ambiguous (see Havet and Penot, 2010, for a review). Aggregate-level studies generally find a positive correlation between unemployment and the share of owner-occupied housing, both within and across countries (Blanchflower and Oswald, 2013; Green and Hendershott, 2001; Isebaert et al., 2015; Oswald, 1996). Individual-level studies, by contrast, tend to find that homeowners, if anything, do better on the job market than renters in terms of unemployment risk, its duration, and wages (Barceló, 2006; Battu et al., 2008; Coulson and Fisher, 2002; 2009; Flatau et al., 2003; Munch et al., 2006; 2008; Rouwendal and Nijkamp, 2010; Van Leuvensteijn and Koning, 2004).}
+\end{quote}
+
+There are many other paper that study housing wealth effects on labor supply. Zhao and Burge (2017) investigates the house wealth effects of elderly on labor supply, while using renters as control group.
+
+\cite{DG2018} use local house price. It does exactly the same regression as ours. The primary objective of this paper is to identify housing wealth effect by using local house price and use renters as controlled group. They mention lots of considerations that help for us, and don't find significant effects for renters. We need to either modify the model, or find a reason why theirs and ours are different. 
+
+Campbell and Cocco (2007) studies housing wealth effects on consumption, and finds that the largest effects for old owners while the smallest effects for young renters. 
+Cunningham and Reed (2014) studies wage effects for high- vs low- levered households. He and Maire (2020) studies the liquidity effects of housing wealth on labor supply using a policy shock, and compare how high- vs low- liquidity household react differently.
+
+\section{Data}\label{sec:data}
+I use the KLIPS 04 - 22, since 04 is the first survey that monthly income is available. I consider the household head whose age is between 18 - 40. When calculating total wealth, I added housing deposits to financial wealth. It is a bit ambiguous that whether renters would report housing deposits as their wealth or not, because there is no housing deposit category (but, there exists personally rented money category) for wealth reporting. For house owners, if they rented a house, they should have reported the housing deposit as financial debts.
+
+\section{Econometric Model}\label{sec:model}
+It is necessary to separate out unanticipated-shocks and anticipated-trends from housing price dynamics to identify the effects of housing market shocks. In doing so, we do the following regression.
+\begin{equation}
+    \tilde P_{j,t} = \alpha_j + \gamma_t + \rho \tilde P_{j,t-1} + \epsilon_t
+\end{equation}where $j$ is region, $\tilde P_{j,t}$ is the log-average house price calculated by KLIPS. $\alpha_j$ is the region-specific growth rate of housing price. Aggregate shock is absorbed by time-fixed effect $\gamma_t$. We run the fixed effect regression, and define the housing market shock $P_{j,t}$ by the residual: $P_{j,t} \equiv \tilde P_{j,t} - \hat{\tilde P}_{j,t}$.
+
+\begin{equation}
+    y_{it} = \alpha_i + \gamma_t + x_{it}'\beta + \eta_{j(i,t)} +\beta_0 I(H_{it} = r) + \sum_{h=o,r} P_{j(i,t)}\cdot I(H_{it} = h)\cdot\beta_{h} + \epsilon_{it}
+\end{equation}
+\begin{itemize}
+	\item $y_{it}$: dependent variable. labor hours, unemployment dummy and real wages.
+	\item $\alpha_i,\gamma_t$: individual and time fixed effects
+	\item $x_{it}$: age, age-squared, total wealth (financial + housing), financial debt, monthly income (from all sources. labor, financial, etc.)
+	\item $j(i,t)$: a region where $i$ lives at time $t$
+	\item $\eta_{j(i,t)}$ : region fixed effect
+	\item $P_{j(i,t)}$ : regional (real) house price excluding own house price
+	\item $H_{it}$ : house ownership status. $H_{it} = o(wner)$ or $H_{it}=r(enter)$.
+	\item $\beta_0$: coefficient for renter dummy
+	\item $\beta_o,\beta_r$: effect of regional house prices on $y$, depending on house ownership status.
+\end{itemize}
+
+\section{Results}\label{sec:result}
+\paragraph{Labor market participation} Model (1) is without interaction between regional house price and house ownership. The effect of home-ownership itself does not have a significant effect for labor hours.
+
+Model (2) is baseline. The interaction term between renter and regional house price is positive and significant, while that of owners is negative and insignificant. The overall insignificant effect of model (1) comes from the higher labor hours of renters when regional house price is higher and lower labor hours of renters when regional house price is lower. Model (3) includes net wealth, rather than wealth and debt separate. Model (4) is only for people living in Seoul. The patterns are similar. The signs of wealth and debt effects are expected. 
+
+\paragraph{Employment} (necessary?)
+
+\paragraph{Hours of work}
+
+\paragraph{Wages} 
+
+\paragraph{Consumption} 
+
+\subsection{Robustness}\label{subsec:robust}
+
+
+\section{Concluding Remarks}\label{sec:conc}
+
+
+\newpage
+\bibliography{hp_ls}
+
+\newpage
+\begin{appendices}
+\numberwithin{equation}{section}
+
+\section{Tables and Figures}
+
+
+\end{appendices}
+
+\end{document}
