@@ -1,6 +1,6 @@
-local `user' = 2 // 1 = JM, 2 = IC
-
 clear
+
+local user = 2 // 1 = JM, 2 = IC
 
 if `user' == 1 {
   cd "c:\data\KLIPS\data"
@@ -13,19 +13,20 @@ if `user' == 2 {
 set matsize 5000
 set more off
 
+/*
 (if `user' == 1) merge m:1 year using ".\CPI_yearly.dta"
 (if `user' == 2) merge m:1 year using "../Data/CPI_yearly.dta"
 drop if _merge == 2
 drop _merge
-
+*/
 
 ** Generate unique region id
 gen unique_region = 100*region + region2
 
 
 ** Unexpected (cyclical component HP)
-(if `user' == 1) merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2 reg_HP_cyc3)
-(if `user' == 2) merge m:1 unique_region year using "../Temp/RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2 reg_HP_cyc3)
+if (`user' == 1) merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2)
+if (`user' == 2) merge m:1 unique_region year using "../Temp/RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2)
 
 
 gen lnw = ln(wage)
@@ -213,3 +214,5 @@ label variable nh_consumption "Consumption(Non-housing)"
 label variable food_consumption "Food consumption"
 
 fvset base 1 house_owner
+
+if (`user' == 2) save "../Output/klips_final.dta", replace
