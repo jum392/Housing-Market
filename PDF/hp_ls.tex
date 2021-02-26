@@ -50,7 +50,7 @@
 
 \title{House Prices and Labor Supply: Evidence from South Korea\thanks{[To be added]}}
 \author{
-    Inhyuk Choi\thanks{Email: \texttt{\href{mailto:ichoi@psu.edu}{ichoi@psu.edu}}.}
+    Inhyuk Choi\thanks{Email: \texttt{\href{mailto:ichoi@kipf.re.kr}{ichoi@kipf.re.kr}}.}
     \and
     Ji-Woong Moon\thanks{Email: \texttt{\href{mailto:jiwoong@mail.shufe.edu.cn}{jiwoong@mail.shufe.edu.cn}}.}
     }
@@ -73,15 +73,15 @@ In many countries, including South Korea and the U.S., housing is the single mos
 
 Using the KLIPS data, we find blah blah. (Which results should we emphasize?)
 
-We contribute to the previous literature in the following ways. (In my opinion) 
+We contribute to the previous literature in the following ways. (In my opinion)
 \begin{itemize}
-	\item For Korean readers, we document how Korean labor market respond to housing market shocks.  
+	\item For Korean readers, we document how Korean labor market respond to housing market shocks.
 	\item For general readers, we provide additional evidence on general patterns using Korean data. (...)
 	\item (Haven't done yet) We identify(!) the effects of housing market shocks for young renters, which haven't been documented well (I guess). It is difficult to identify the effects for young renters because i) wealth effects for young renters depend on future house price expectation and moving is endogenous ii) housing market shocks are correlated to other economic shocks. How do we defend?
 	\begin{itemize}
 		\item For i), (Hypothetical argument. Need to be verified) In Korea, majority of population live in Seoul metropolitan area, and more so for young population. Thus, local housing shocks today are correlated more with future housing price in other large countries like the U.S ?  
 		\item For ii) We only look at the manufacturing workers. (start career in manufacturing sectors) The rationale behind is that local economic shocks that affect both labor market and house prices do not directly affect manufacturing sectors employment because manufacturing firms produce goods sold nationally. We also look at Seoul sample, because as a one-day life zone, even services are (believed to be) tradable within Seoul. 
-	\end{itemize} 
+	\end{itemize}
 \end{itemize}
 
 \paragraph{Related literature.} There are many papers that study how housing ownership itself affects the labor supply, especially focusing on extensive margin of the labor supply (cf, Oswald hypothesis). I will refer the literature review of Broulikova et al. (2020).
@@ -98,6 +98,48 @@ Campbell and Cocco (2007) studies housing wealth effects on consumption, and fin
 
 \section{Data}\label{sec:data}
 I use the KLIPS 04 - 22, since 04 is the first survey that monthly income is available. I consider the household head whose age is between 18 - 40. When calculating total wealth, I added housing deposits to financial wealth. It is a bit ambiguous that whether renters would report housing deposits as their wealth or not, because there is no housing deposit category (but, there exists personally rented money category) for wealth reporting. For house owners, if they rented a house, they should have reported the housing deposit as financial debts.
+
+Table \ref{tab:sum_stat} presents summary statistics for the key variables used in the analysis.
+
+\begin{table}[pt]
+    \centering
+    \caption{Summary Statistics}
+    \label{tab:sum_stat}
+    \begin{tabular}{llrrr}
+        \toprule
+        &  & Renters & Owners & All \\
+        \midrule
+        \multicolumn{4}{l}{\textbf{A. Wealth}} \\
+        \multicolumn{2}{l}{\textit{Total wealth}} \\
+        & (mean, unit?) & 1.22 & 3.65 & 1.95 \\
+        \multicolumn{2}{l}{\textit{Financial debt}} \\
+        & (mean, unit?) & 0.32 & 0.55 & 0.46 \\
+        \phantom{} \\
+        \multicolumn{4}{l}{\textbf{B. Employment}} \\
+        \multicolumn{2}{l}{\textit{Employment status}} \\
+        & 1 & 30.5 & 38.1 & 68.6 \\
+        & 2 & 7.9 & 17.4 & 25.3 \\
+        & 3 & 1.3 & 4.9 & 6.1 \\
+        \multicolumn{2}{l}{\textit{Spouse's employment status}} \\
+        & 1 &  \\
+        & 2 &  \\
+        & 3 &  \\
+        \multicolumn{2}{l}{\textit{Hours of work}} \\
+        & (mean, hours) & 43.9 & 42.6 & 43.2 \\
+        \phantom{} \\
+        \multicolumn{4}{l}{\textbf{C. Demographics}} \\
+        \multicolumn{2}{l}{\textit{Age}} \\
+        & less than 40 & 16.6 & 13.3 & 29.9 \\
+        & 40 or above & 21.6 & 48.5 & 70.1 \\
+        \multicolumn{2}{l}{\textit{Having children in school years}} \\
+        & yes & 18.2 & 25.6 & 43.8 \\
+        & no & 20.1 & 36.1 & 56.2 \\
+        \midrule
+        \multicolumn{2}{l}{$N$} & 53,011 & 85,556 & 138,567 \\
+        \bottomrule
+    \end{tabular}
+    \floatfoot{\textit{Notes:} }
+\end{table}
 
 \section{Econometric Model}\label{sec:model}
 It is necessary to separate out unanticipated-shocks and anticipated-trends from housing price dynamics to identify the effects of housing market shocks. In doing so, we do the following regression.
@@ -127,7 +169,29 @@ Model (2) is baseline. The interaction term between renter and regional house pr
 
 \paragraph{Employment} (necessary?)
 
-\paragraph{Hours of work}
+\paragraph{Hours of work} 
+
+\begin{table}[pt]
+    \centering
+    \caption{Hours of work}
+    \label{tab:hours_of_work}
+    \begin{tabular}{lrrlrr}
+        \toprule
+        & \multicolumn{2}{r}{Young} &  & \multicolumn{2}{r}{Old} \\
+        \cmidrule{2-3} \cmidrule{5-6} 
+        & (1) & (2) &  & (3) & (4) \\
+        & Children & No children &  & Children & No children \\
+        \midrule
+        reg HP cyc: renter & 0.354\phantom{***} & 0.544*** &  & $-$0.217\phantom{***} & $-$0.024\phantom{***} \\
+        reg HP cyc: owner & 0.266\phantom{***} & 0.592\phantom{***} &  & $-$0.812\phantom{***} & $-$1.523*** \\
+        tot wealth & $-$0.154\phantom{***} & 0.054\phantom{***} &  & 0.120\phantom{***} & $-$0.059\phantom{***} \\
+        fin debt & 0.534*** & 0.572\phantom{***} &  & $-$0.200\phantom{***} & 0.091\phantom{***} \\
+        \midrule
+        $N$ & 3,738\phantom{***} & 4,391\phantom{***} &  & 4,931\phantom{***} & 8,541\phantom{***} \\
+        \bottomrule
+    \end{tabular}
+    \floatfoot{\textit{Notes:} }
+\end{table}
 
 \paragraph{Wages} 
 

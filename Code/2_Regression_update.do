@@ -63,7 +63,7 @@ eststo clear
 
 eststo: xtreg lab_hour c.age c.age2 i.year tot_wealth fin_debt i.Lhouse_owner i.young i.dum_trd2#i.young#i.Lhouse_owner#c.reg_HP_cyc2 i.school_child num_fam ///
  [aw = weight] if reg_up10dum == 1 & age >= 22, fe
- 
+
 eststo: xtreg lnw c.age c.age2 i.year tot_wealth fin_debt i.Lhouse_owner i.young i.dum_trd2#i.young#i.Lhouse_owner#c.reg_HP_cyc2 i.school_child num_fam ///
  [aw = weight] if reg_up10dum == 1 & age >= 22, fe
 
@@ -71,3 +71,24 @@ esttab using "C:\Users\net19\OneDrive\문서\Research\My Research\Regressions\Ho
  se ar2 wide b(4) se(4) ///
  drop(*.year 0.Lhouse_owner 0.school_child 0.young) star(* 0.1 ** 0.05 *** 0.01) booktabs title(Labor hours, Wages\label{tab:reglh2})
 eststo clear
+
+// specifications from IC
+
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight], fe
+
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 0, fe
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 1, fe
+
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 0 & school_child == 0, fe
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 0 & school_child == 1, fe
+
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 1 & school_child == 0, fe
+xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 1 & school_child == 1, fe
+
+// Questions
+// restrict to head and partner only?
+// house_owner or Lhouse_owner
+// diff in reg_HP_cyc and reg_HP_cyc2?
+// control: part-time job, spouse's LM status, edu, etc?
+// why reg_up10dum == 1?
+// emp_stat?
