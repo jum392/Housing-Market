@@ -86,9 +86,11 @@ xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_de
 xtreg lab_hour i.year i.house_owner#c.reg_HP_cyc i.house_owner tot_wealth fin_debt [aw = weight] if young == 1 & school_child == 1, fe
 
 // Questions
-// restrict to head and partner only?
-// house_owner or Lhouse_owner
-// diff in reg_HP_cyc and reg_HP_cyc2?
+// restrict to head and partner only? Yes
+// house_owner or Lhouse_owner: Lhouse_owner is house_owner(t-1)
+// diff in reg_HP_cyc and reg_HP_cyc2? 
+// cyc: residual from raw price. cyc2: residual from logprice. 
 // control: part-time job, spouse's LM status, edu, etc?
 // why reg_up10dum == 1?
+// reg_up10dum == 1 if a specific region contains at least 10 observations for all years
 // emp_stat?
