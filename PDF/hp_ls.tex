@@ -167,6 +167,28 @@ It is necessary to separate out unanticipated-shocks and anticipated-trends from
 
 Model (2) is baseline. The interaction term between renter and regional house price is positive and significant, while that of owners is negative and insignificant. The overall insignificant effect of model (1) comes from the higher labor hours of renters when regional house price is higher and lower labor hours of renters when regional house price is lower. Model (3) includes net wealth, rather than wealth and debt separate. Model (4) is only for people living in Seoul. The patterns are similar. The signs of wealth and debt effects are expected. 
 
+\begin{table}[pt]
+    \centering
+    \caption{Labor market participation}
+    \label{tab:lm_part}
+    \begin{tabular}{lrrlrr}
+        \toprule
+        & \multicolumn{2}{r}{Young} &  & \multicolumn{2}{r}{Old} \\
+        \cmidrule{2-3} \cmidrule{5-6} 
+        & (1) & (2) &  & (3) & (4) \\
+        & Children & No children &  & Children & No children \\
+        \midrule
+        reg HP cyc: renter & 0.010\phantom{***} & $-$0.024*** &  & 0.002\phantom{***} & $-$0.001\phantom{***} \\
+        reg HP cyc: owner & $-$0.018\phantom{***} & $-$0.284*** &  & 0.012\phantom{***} & $-$0.005\phantom{***} \\
+        tot wealth & $-$0.001\phantom{***} & 0.002\phantom{***} &  & $-$0.001\phantom{***} & $-$0.002*** \\
+        fin debt & 0.005\phantom{***} & 0.043*** &  & $-$0.003\phantom{***} & 0.005*** \\
+        \midrule
+        $N$ & 6,926\phantom{***} & 5,779\phantom{***} &  & 9,404\phantom{***} & 23,247\phantom{***} \\
+        \bottomrule
+    \end{tabular}
+    \floatfoot{\textit{Notes:} }
+\end{table}
+
 \paragraph{Employment} (necessary?)
 
 \paragraph{Hours of work} 
@@ -195,7 +217,51 @@ Model (2) is baseline. The interaction term between renter and regional house pr
 
 \paragraph{Wages} 
 
+\begin{table}[pt]
+    \centering
+    \caption{Log wages}
+    \label{tab:wages}
+    \begin{tabular}{lrrlrr}
+        \toprule
+        & \multicolumn{2}{r}{Young} &  & \multicolumn{2}{r}{Old} \\
+        \cmidrule{2-3} \cmidrule{5-6} 
+        & (1) & (2) &  & (3) & (4) \\
+        & Children & No children &  & Children & No children \\
+        \midrule
+        reg HP cyc: renter & $-$0.008\phantom{***} & $-$0.000\phantom{***} &  & 0.006\phantom{***} & 0.007\phantom{***} \\
+        reg HP cyc: owner & 0.006\phantom{***} & 0.283**\phantom{*} &  & 0.014\phantom{***} & $-$0.010\phantom{***} \\
+        tot wealth & 0.008*\phantom{**} & 0.022**\phantom{*} &  & 0.000\phantom{***} & 0.000\phantom{***} \\
+        fin debt & $-$0.025*** & 0.014\phantom{***} &  & 0.001\phantom{***} & 0.000\phantom{***} \\
+        \midrule
+        $N$ & 3,728\phantom{***} & 4,380\phantom{***} &  & 4,913\phantom{***} & 8,516\phantom{***} \\
+        \bottomrule
+    \end{tabular}
+    \floatfoot{\textit{Notes:} }
+\end{table}
+
 \paragraph{Consumption} 
+
+\begin{table}[pt]
+    \centering
+    \caption{Consumption}
+    \label{tab:consumption}
+    \begin{tabular}{lrrlrr}
+        \toprule
+        & \multicolumn{2}{r}{Young} &  & \multicolumn{2}{r}{Old} \\
+        \cmidrule{2-3} \cmidrule{5-6} 
+        & (1) & (2) &  & (3) & (4) \\
+        & Children & No children &  & Children & No children \\
+        \midrule
+        reg HP cyc: renter & 6.551*** & $-$0.389\phantom{***} &  & 6.599*** & $-$0.148\phantom{***} \\
+        reg HP cyc: owner & $-$12.353**\phantom{*} & 3.983\phantom{***} &  & 22.548*** & 2.557*\phantom{**} \\
+        tot wealth & 6.184*** & 16.290*** &  & 2.579*** & 1.570*** \\
+        fin debt & $-$2.454**\phantom{*} & 9.406*** &  & 1.454\phantom{***} & 0.705**\phantom{*} \\
+        \midrule
+        $N$ & 6,912\phantom{***} & 5,615\phantom{***} &  & 9,401\phantom{***} & 23,236\phantom{***} \\
+        \bottomrule
+    \end{tabular}
+    \floatfoot{\textit{Notes:} }
+\end{table}
 
 \subsection{Robustness}\label{subsec:robust}
 
