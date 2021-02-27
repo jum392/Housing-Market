@@ -2,11 +2,9 @@
 * KLIPS Data cleaning
 * Select only for the head of household
 
-local user = 2 // 1 = JM, 2 = IC
-
 clear
 set more off
-if (`user' == 1) cd "c:\data\KLIPS\data"
+cd "c:\data\KLIPS\data"
 
 *local year 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
 *local year 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22
@@ -15,12 +13,8 @@ local year 09 10 11 12 13 14 15 16 17 18 19 20 21 22
 foreach y of local year{
 
 
-if `user' == 1 {
-  use ".\klips`y'p.dta", replace
-}
-if `user' == 2 {
-  use "../Data/1-22차_release_Stata/klips`y'p.dta", replace
-}
+
+use ".\klips`y'p.dta", replace
 
 gen year = 20`y' - 3
 
@@ -41,13 +35,7 @@ rename p`y'0110 edu
 
 
 
-if `user' == 1 {
-  local using_path ".\klips`y'h.dta"
-}
-if `user' == 2 {
-  local using_path "../Data/1-22차_release_Stata/klips`y'h.dta"
-}
-merge m:m hhid`y' using `using_path', keepusing(h`y'0141 h`y'0142 h`y'0150 ///
+merge m:m hhid`y' using ".\klips`y'h.dta", keepusing(h`y'0141 h`y'0142 h`y'0150 ///
 h`y'1406 h`y'1410 h`y'1412 h`y'1413 h`y'1414 h`y'2512 h`y'2513 ///
 h`y'2562 h`y'2564 h`y'2566 h`y'2568 h`y'2570 h`y'2572 ///
 h`y'2602 h`y'2605 h`y'2608 h`y'2611 h`y'2614 h`y'2617 h`y'1401 ///
@@ -57,6 +45,7 @@ h`y'1501 h`y'1118 h`y'1119 h`y'1127 h`y'1128 h`y'1218 h`y'1219 h`y'1227 h`y'1228
 drop if _merge == 2
 drop _merge
 
+rename hhid`y' hhid
 rename h`y'0141 region
 rename h`y'0142 region2
 rename h`y'0150 num_fam
@@ -156,38 +145,22 @@ rename w`y'p_l weight_l
 rename w`y'p_c weight_c
 
 
-keep year pid sex age edu region region2 num_fam house_own house_size house_price ///
+keep year pid hhid sex age edu region region2 num_fam house_own house_size house_price ///
 house_col house_rent house_wealth fin_wealth fin_debt wage lab_hour tenure job_ch ///
 emp_stat unemp OLF weight_l weight_c ind occ moving m_inc househead job_ch2 ///
 consumption food_consumption housing_consumption nh_consumption school_child search_dur ///
 par_receive par_give
-
-if `user' == 1 {
-  save ".\KLIPS`y'clean.dta", replace
-}
-if `user' == 2 {
-  save "../Temp/KLIPS`y'clean.dta", replace
-}
-
+ 
+save ".\KLIPS`y'clean.dta", replace
 }
 
 
 
-if `user' == 1 {
-  use ".\KLIPS09clean.dta", clear
-  local y2 10 11 12 13 14 15 16 17 18 19 20 21 22
 
-  foreach z of local y2{
-  append using ".\KLIPS`z'clean.dta"
-  }
-  save ".\KLIPSclean_full.dta", replace
-}
-if `user' == 2 {
-  use "../Temp/KLIPS09clean.dta", clear
-  local y2 10 11 12 13 14 15 16 17 18 19 20 21 22
+use ".\KLIPS09clean.dta"
+local y2 10 11 12 13 14 15 16 17 18 19 20 21 22
 
-  foreach z of local y2{
-  append using "../Temp/KLIPS`z'clean.dta"
-  }
-  save "../Temp/KLIPSclean_full.dta", replace
+foreach z of local y2{
+append using ".\KLIPS`z'clean.dta"
 }
+save ".\KLIPSclean_full.dta", replace

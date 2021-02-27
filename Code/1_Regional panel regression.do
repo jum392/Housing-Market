@@ -15,8 +15,13 @@ predict reg_HP_cyc, residual
 
 gen lnreghp2 = ln(reg_house_price2)
 
-xtreg lnreghp2 i.unique_region#c.year L.lnreghp2 [aw = weight], fe
+xtreg lnreghp2 i.year L.lnreghp2 [aw = weight], fe
+predict reg_HP_trd2
 predict reg_HP_cyc2, residual
 
-//save ".\RegionalReg.dta", replace
-save "../Temp/RegionalReg.dta", replace
+
+xtreg lnreghp2 i.year L.lnreghp2 L2.lnreghp2 [aw = weight], fe
+predict reg_HP_cyc3, residual
+
+
+save ".\RegionalReg.dta", replace

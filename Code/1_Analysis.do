@@ -1,32 +1,25 @@
+
 clear
 
-local user = 2 // 1 = JM, 2 = IC
+cd "c:\data\KLIPS\data"
+use ".\KLIPSclean_full.dta"
 
-if `user' == 1 {
-  cd "c:\data\KLIPS\data"
-  use ".\KLIPSclean_full.dta", clear
-}
-if `user' == 2 {
-  use "../Temp/KLIPSclean_full.dta", clear
-}
 
 set matsize 5000
 set more off
 
-/*
-(if `user' == 1) merge m:1 year using ".\CPI_yearly.dta"
-(if `user' == 2) merge m:1 year using "../Data/CPI_yearly.dta"
+merge m:1 year using ".\CPI_yearly.dta"
 drop if _merge == 2
 drop _merge
-*/
+
 
 ** Generate unique region id
 gen unique_region = 100*region + region2
 
 
 ** Unexpected (cyclical component HP)
-if (`user' == 1) merge m:1 unique_region year using "RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2)
-if (`user' == 2) merge m:1 unique_region year using "../Temp/RegionalReg.dta", keepusing(reg_HP_cyc reg_HP_cyc2)
+merge m:1 unique_region year using "RegionalReg.dta", ///
+keepusing(reg_HP_cyc reg_HP_cyc2 reg_HP_cyc3 reg_HP_trd)
 
 
 gen lnw = ln(wage)
@@ -34,7 +27,7 @@ gen lnw = ln(wage)
 
 ** Drop unnecessary sample
 drop if edu <0
-drop if house_own < 0
+drop if house_own < 0 
 drop if region2 < 0
 
 
@@ -44,7 +37,7 @@ drop if age < 18
 drop if ind < 0
 drop if occ < 0
 drop if lab_hour < 0
-drop if moving < 0
+drop if moving < 0 
 
 xtset pid year
 gen dlnw = lnw - L.lnw
@@ -85,7 +78,7 @@ egen all_ownership = wtmean(house_owner), weight(weight_c) by(year)
 ** Generate regional average price excluding own price
 gen whp = house_price * weight_c
 replace whp = 0 if missing(house_price)
-gen weight_dum = weight_c
+gen weight_dum = weight_c 
 replace weight_dum = 0 if missing(house_price)
 egen weight_sum = sum(weight_dum), by(region region2 year)
 egen reg_house_sum = sum(whp), by(region region2 year)
@@ -138,7 +131,7 @@ replace mover_dum = 0 if mdsum == 0
 
 egen regsum = sum(reg_ch), by(pid)
 gen reg_ch_dum = 1 if regsum > 0
-replace reg_ch_dum = 0 if regsum == 0
+replace reg_ch_dum = 0 if regsum == 0 
 
 ** Build tradable sectors
 gen ind1 = 1 if ind >= 100 & ind < 350
@@ -154,14 +147,14 @@ by pid: gen numob = _n
 gen trd = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1 | ind4 == 1) & numob == 1
 replace trd = 0 if missing(trd) & !missing(ind) & numob == 1
 replace trd = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1 | ind4 ==1) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
-replace trd = 0 if missing(trd) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
+replace trd = 0 if missing(trd) & numob == 2 & (L.OLF == 1 | L.unemp == 1) 
 
 egen dum_trd = sum(trd), by(pid)
 
 gen trd2 = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1) & numob == 1
 replace trd2 = 0 if missing(trd2) & !missing(ind) & numob == 1 & ind4 == 0
 replace trd2 = 1 if (ind1 == 1 | ind2 == 1 | ind3 == 1) & numob == 2 & (L.OLF == 1 | L.unemp == 1)
-replace trd2 = 0 if missing(trd2) & numob == 2 & (L.OLF == 1 | L.unemp == 1) & ind4 == 0
+replace trd2 = 0 if missing(trd2) & numob == 2 & (L.OLF == 1 | L.unemp == 1) & ind4 == 0 
 replace trd2 = -1 if ind4 == 1 & numob == 1
 replace trd2 = -1 if missing(L.trd2) & ind4 == 1 & numob == 2
 
@@ -170,6 +163,10 @@ replace dum_trd2 = . if dum_trd2 < 0
 
 gen dum_trd3 = 1 if (L.ind1 == 1 | L.ind2 == 1 | L.ind3 == 1 )
 replace dum_trd3 = 0 if L.ind1 == 0 & L.ind2 == 0 & L.ind3 == 0
+
+gen fam = 1 if emp_stat == 3
+replace fam = 0 if missing(fam)
+egen dum_fam = sum(fam), by(pid)
 
 gen age2 = age * age
 
@@ -214,5 +211,3 @@ label variable nh_consumption "Consumption(Non-housing)"
 label variable food_consumption "Food consumption"
 
 fvset base 1 house_owner
-
-if (`user' == 2) save "../Output/klips_final.dta", replace
