@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.2) (preloaded format=pdflatex 2021.2.26)  27 FEB 2021 16:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.2) (preloaded format=pdflatex 2021.2.26)  2 MAR 2021 14:51
 entering extended mode
 **./hp_ls.tex
 (hp_ls.tex
@@ -915,21 +915,18 @@ Non-PDF special ignored!
 <special> header=psfrag.pro
 
 {C:/Users/Admin/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2] [3]
-[4] [5] [6] [7] [8] (hp_ls.bbl) [9] [10] (hp_ls.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+[4] [5] [6] [7] [8] [9] (hp_ls.bbl) [10] [11] (hp_ls.aux)
 Package rerunfilecheck Info: File `hp_ls.out' has not changed.
 (rerunfilecheck)             Checksum: DA512364510647931296979199C6AA06;760.
  ) 
 Here is how much of TeX's memory you used:
- 23152 strings out of 479334
- 418324 string characters out of 2857084
- 721242 words of memory out of 3000000
+ 23153 strings out of 479334
+ 418331 string characters out of 2857084
+ 720381 words of memory out of 3000000
  40151 multiletter control sequences out of 15000+200000
  415968 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 87i,12n,88p,1269b,508s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 87i,12n,88p,1280b,455s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Admin\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1000.pk> <C:\Users\Admin\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
 0\tcrm0600.pk> <C:\Users\Admin\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
@@ -954,9 +951,9 @@ pData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users
 /Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti8.pfb><
 C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmt
 t8.pfb>
-Output written on hp_ls.pdf (10 pages, 231180 bytes).
+Output written on hp_ls.pdf (11 pages, 232628 bytes).
 PDF statistics:
- 201 PDF objects out of 1000 (max. 8388607)
- 34 named destinations out of 1000 (max. 500000)
+ 205 PDF objects out of 1000 (max. 8388607)
+ 35 named destinations out of 1000 (max. 500000)
  69 words of extra memory for PDF output out of 10000 (max. 10000000)
 
