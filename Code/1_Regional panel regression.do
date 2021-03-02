@@ -25,3 +25,4 @@ predict reg_HP_cyc3, residual
 
 
 save ".\RegionalReg.dta", replace
+//save "../Temp/RegionalReg.dta", replace
